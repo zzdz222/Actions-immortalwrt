@@ -23,12 +23,15 @@ on:
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: openwrt-23.05
-  CONFIG_FILE: configs/Packages.txt
+  CONFIG_FILE: configs/ipq40xx.txt
+  CONFIG_PACKAGES: configs/packages-L.txt
+  CONFIG_5G: configs/packages-5G.txt
   FREE_DISK_SH: scripts/free_disk_space.sh
   ENV_SH: scripts/environment.sh
   SETTINGS_SH: scripts/init-settings.sh
   PACKAGES_SH: scripts/packages.sh
-  CLASH_CORE_SH: scripts/preset-clash-core-amd64.sh
+  INSTALL5G_SH: scripts/install-5G.sh
+  #  CLASH_CORE_SH: scripts/preset-clash-core-amd64.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_RELEASE: true
@@ -71,7 +74,7 @@ jobs:
       uses: klever1988/cachewrtbuild@main
       with:
         ccache: 'true'
-        mixkey: '23.05-X86'
+        mixkey: 'ipq40xx'
         prefix: ${{ github.workspace }}/openwrt
 
     - name: 更新 & 安装 feeds & 执行脚本
@@ -81,7 +84,7 @@ jobs:
         ./scripts/feeds install -a
         chmod +x $GITHUB_WORKSPACE/$SETTINGS_SH && $GITHUB_WORKSPACE/$SETTINGS_SH
         chmod +x $GITHUB_WORKSPACE/$PACKAGES_SH && $GITHUB_WORKSPACE/$PACKAGES_SH
-        chmod +x $GITHUB_WORKSPACE/$CLASH_CORE_SH && $GITHUB_WORKSPACE/$CLASH_CORE_SH
+    #   chmod +x $GITHUB_WORKSPACE/$CLASH_CORE_SH && $GITHUB_WORKSPACE/$CLASH_CORE_SH
 
     - name: 导入补丁和配置 & 下载文件
       run: |
@@ -137,8 +140,8 @@ jobs:
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
       run: |
-        echo -e "✅ 23.05 源码 X86 平台\n" >> release.txt
-        echo "release_tag=$(date +"%Y.%m.%d-23.05_x86")" >> $GITHUB_OUTPUT
+        echo -e "✅ 23.05 源码 ipq40xx 平台\n" >> release.txt
+        echo "release_tag=$(date +"%Y.%m.%d-23.05_ipq40xx")" >> $GITHUB_OUTPUT
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: 上传固件到发布
