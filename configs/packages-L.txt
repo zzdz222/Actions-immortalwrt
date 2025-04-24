@@ -1,6 +1,6 @@
 #kmod
 CONFIG_PACKAGE_kmod-usb-net-rndis=y
-
+CONFIG_PACKAGE_kmod-tun=y
 
 #themes
 CONFIG_PACKAGE_luci-theme-argon=y
