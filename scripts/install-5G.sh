@@ -7,8 +7,13 @@ echo "======================================="
 # 1. 克隆 5G Modem 支持库
 echo >> feeds.conf.default
 echo 'src-git modem https://github.com/FUjr/modem_feeds.git;main' >> feeds.conf.default
+echo 'src-git nas https://github.com/linkease/nas-packages.git;master' >> feeds.conf.default
+echo 'src-git nas_luci https://github.com/linkease/nas-packages-luci.git;main' >> feeds.conf.default
 ./scripts/feeds update modem
 ./scripts/feeds install -a -p modem
+./scripts/feeds update nas nas_luci
+./scripts/feeds install -a -p nas
+./scripts/feeds install -a -p nas_luci
 
 if [ -d "package/Modem-Support" ]; then
     echo "⚠️ 目录 package/Modem-Support 已存在，删除旧版本..."
